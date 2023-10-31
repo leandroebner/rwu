@@ -3,7 +3,7 @@ int memory;                        //stores previous sample input value for togg
 int output;                        //main variable which should be toggled, virtual output of logic
 unsigned long ref;                 //time stamp for referencing debouncing
 const int led = 3;                 //defines the led pin
-const int button = 2;              //defines the button pin
+const int button = 4;              //defines the button pin
 unsigned long debounce = 100;      //defines cooldown in ms for toggle 
 
 void setup(){
