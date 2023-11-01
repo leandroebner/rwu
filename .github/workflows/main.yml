@@ -1,35 +1,17 @@
-- name: Github Action for LaTeX
+- name: LaTeX Action
   # You may pin to the exact commit or the version.
-  # uses: xu-cheng/latex-action@f1ca82cbed861b3534e2997dd584944f55b884ed
-  uses: xu-cheng/latex-action@v3
+  # uses: fudan-mse/latex-action@eb2eb7ba472011213ac0a6286fd776494623362c
+  uses: fudan-mse/latex-action@v0.0.1
   with:
-    # The version of TeX Live to be used
-    texlive_version: # optional
-    # The docker image to be used
-    docker_image: # optional
     # The root LaTeX file to be compiled
     root_file: 
-    # The working directory for this action
+    # The working directory for the LaTeX engine
     working_directory: # optional
-    # Change directory into each root file's directory before compiling each documents
-    work_in_root_file_dir: # optional, default is false
-    # Continuing to build document even with LaTeX build errors
-    continue_on_error: # optional, default is false
     # The LaTeX engine to be invoked
     compiler: # optional, default is latexmk
     # Extra arguments to be passed to the LaTeX engine
-    args: # optional, default is -pdf -file-line-error -halt-on-error -interaction=nonstopmode
+    args: # optional, default is -pdf -file-line-error -interaction=nonstopmode
+    # Install extra packages by tlmgr
+    extra_packages: # optional
     # Install extra packages by apk
     extra_system_packages: # optional
-    # Install extra .ttf/.otf fonts.
-    extra_fonts: # optional
-    # Arbitrary bash codes to be executed before compiling LaTeX documents
-    pre_compile: # optional
-    # Arbitrary bash codes to be executed after compiling LaTeX documents
-    post_compile: # optional
-    # Instruct latexmk to enable --shell-escape
-    latexmk_shell_escape: # optional, default is false
-    # Instruct latexmk to use LuaLaTeX
-    latexmk_use_lualatex: # optional, default is false
-    # Instruct latexmk to use XeLaTeX
-    latexmk_use_xelatex: # optional, default is false
