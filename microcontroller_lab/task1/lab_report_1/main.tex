@@ -1,43 +1,148 @@
-\documentclass{scrartcl}
-\usepackage{graphicx} % Required for inserting images
-\graphicspath{/graphicx/}
-\title{Lab Report 1}
-\author{Ebner, Leandro et al.\thanks{Neha Bhushan Borole, Caleb Patrick D'Souza} \\ Matr. Nr.: 14740284}
-\date{\today}
+% -----------------------------------------------------------------------------------
+% TeX template for university, written by Leandro Ebner 2023.
+% v0.9 beta, licensed under the GNU GPLv3, see <https://www.gnu.org/licenses/>
+% -----------------------------------------------------------------------------------
+
+\documentclass{scrartcl}                    % use KOMA-Script class "article"
+\usepackage{rwudefs}                        % use RWU template
+\usepackage[style=nature]{biblatex}        % required to use external bibliography file
+\addbibresource{bibliography.bib}           % main directory for bibliography
+\usepackage[automark]{scrlayer-scrpage}     % use custom header and footer
+\clearpairofpagestyles                      % clear default values
+\setlength{\headheight}{53pt}               % adjust header to fit in RWU logo
+\ohead[\rwulogo]{\headmark}                 % set custom header
+\ofoot[\pagemark]{\pagemark}                % set custom footer
+\ifoot{© Leandro Ebner 2023}                % copyright emblem
+\usepackage{graphicx}                       % required for inserting images
+\graphicspath{{graphicx/}}                  % main directory for images
+\usepackage{svg}                            % ability to use svg 
+\usepackage{wrapfig}                        % package to embedd smaller pictures more appeiling
+\usepackage{layout}                         % for debugging typeset only
+\usepackage{hyperref}                       % allows for links in references and labels
+
+% main code:
 
 \begin{document}
 
+\title{Microcontroller Task 1}
+\author{Ebner, Leandro et al.\thanks{Neha Bhushan Borole Matr. Nr.: 16740051 and Caleb Patrick D'Souza Matr. Nr.: 28840332} \\ Matr. Nr.: 14740284}
+\date{\today}
 \maketitle
+
+\begin{abstract}
+Grundpraktikum 3: \\ Controlling an LED using a pushbutton and an Arduino Nano.
+\end{abstract}
+
 \tableofcontents
 
 \section{Introduction}
 
-\section{Basic theory}
-\subsection{Arduino Nano}
-\subsection{Push button}
-\subsection{LED}
+The aim of the “Task 1. Controlling an LED using a pushbutton and an Arduino Nano” is to make the participants of the lab able to do the following task below:
 
+\begin{enumerate}
+    \item Create the hardware setup.
+    \item Implement the toggle LED as a result of the push button action (press and release).
+    \item Implement the debounce function for the push button.
+    \item Implement the timer to create the heart beat.
+    \item Implement a timing function that will leave the LED on for 5s after pressing the button and will toggle it off or back on when the button is pressed again.
+\end{enumerate}
+
+\section{Basic theory}
+    \subsection{Arduino Nano}
+    
+    The \emph{Arduino Nano} is a development board that is based on the \emph{ATmega328P} microcontroller. It is part of the Arduino family of open source hardware and software products, which are designed to facilitate electronic prototyping. The Nano model, in particular, is known for it's small size, affordability, and a wide range of applications. Thus it can be used easily with the \emph{Arduino IDE} which is an ideal choice for both beginners and experienced users. The microcontroller is equipped with 32kB of flash memory, 2kB of SRAM, and 1kB of EEPROM. It can control other devices and components with the help of 14 digital input/output pins and 8 analog pins. Powering and uploading the code can be done by utilising the modern USB-C connector of the Arduino Nano. A more detailed figure of the pinout will be given at Figure \ref{pinout}.
+    
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{graphicx/nano}
+        \caption{The Arduino Nano with pin headers for GPIOs and USB-C connector to provide power and for uploading the code with a computer. \cite{nano}}
+        \label{nano}
+    \end{figure} 
+    
+    \subsection{Push button}
+
+     \begin{wrapfigure}{l}{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.2\textwidth]{graphicx/button}
+        \caption{Push button in 2 common pin configuration. \cite{button}}
+        \label{button}
+    \end{wrapfigure}
+    
+    The \emph{pushbutton} that was given is a simple momentary switch used as an user input. The button consist of four metal pins, two of them are connected however. When the button is pressed the pair will get connected. Therefore, the button is forming a temporary electrical connection. A spring alike part inside of the button enclosure ensures to break the connection once again as soon as the button gets released. To integrate pushbuttons with an Arduino or a similar microcontroller, they are typically connected to specific digital input pins and configured to respond to button presses by sampling the voltage levels. One common challenge when working with pushbuttons is a phenomenon called \emph{bouncing}. When a button is pressed or released, the metal contacts can make multiple, rapid electrical connections and disconnections due to mechanical vibrations. Such oscillations which the microcontroller interprets as multiple button presses can lead to unexpected behaviour. \emph{Debouncing} is a process used to filter out these unwanted multiple signal changes and guarantees the input behaves the way a user would expect. 
+
+    \subsection{LED}
+
+     \begin{wrapfigure}{r}{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.2\textwidth]{graphicx/led} 
+        \caption{3mm red ledm the bigger leg indicates the anode (+). \cite{led}}
+        \label{led}
+    \end{wrapfigure}
+
+    An LED is the the short form of \emph{light emitting diode}. This type of semiconductor is either used as a light source or like in this case, to visualize various signal states and conditions. It consists of a \emph{pn-junction} where light get's emitted due to a effect known as \emph{carrier recombination}. LEDs in general work with really small amounts of current (typically \verb|<|5mA) and are fairly simple to use. Because of the restricted current an Arduino can provide to an output pin, LEDs are very often used in such applications. They do require a current limiting resistor in series with them in the given circuit. This is in order to operate at the LED at the higher 5V \emph{TTL} logic level the Arduino provides compared to their lower internal forward voltage.
+
+     \newpage
 \section{Hardware design and development}
-\subsection{Block diagramm}
-\subsection{Schematic}
+    \subsection{Block diagram}
+
+     \begin{wrapfigure}{l}{0.6\textwidth}
+        \centering
+        \includesvg[width=0.6\textwidth]{graphicx/block_diagram}
+        \caption{Block diagram of the circuit.}
+        \label{block_diagram}
+    \end{wrapfigure}
+
+    Connecting the hardware together is already given. In summary, the circuit consists of one sensor and one actor. Therefore, we need to have one input and output respectively. The button as well as the LED with a suitable resistor (i.e. 220\(\Omega\)) is hooked up to one of the GPIO pins of the Arduino each. There is a wide variety of different pins to choose one, in my example I will use the pin 3 to drive the led and pin 4 to sense if the button has been pressed. These connections are illustrated as simplex conecctions while the PC connection is visualized as a duplex connection. This is because the PC provides power as well as serial communication to upload code via the USB interface. Also, even tough the terms \emph{Arduino} and \emph{Microcontroller} are used as synonyms in this report, this is not precisely true. The Arduino is a sort of breakout \emph{PCB} with attached components to work easier with the actual microcontroller. See figure \ref{block_diagram}. To be able to choose appropriate pins, one can follow the so called \emph{pinout} of the Arduino, which is a reference for what each pin is cabable of and used for. Also, certain functions i.e. \emph{PWM} which can only be accessed at specific pins. An example of a pinout is given in Figure \ref{pinout}.
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.3.5\textwidth]{graphicx/pinout}
+        \caption{Graphical representation of the pinout of an Arduino Nano. \cite{pinout}}
+        \label{pinout}
+    \end{figure}    
+
+    
+    \subsection{Schematic}
+    
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.2\textwidth]{graphicx/schem}
+        \caption{mehr text}
+        \label{schem}
+    \end{figure}    
+    
 \subsection{Hardware setup}
 
 \section{Software Design and development}
+\subsection{Flowchart}
+
+\begin{figure}
+    \centering
+    \includesvg[width=0.2\textwidth]{graphicx/flowchart}
+    \caption{}
+    \label{flowchart}
+\end{figure}
+
 \subsection{Functions}
 \subsubsection{Initialize variable}
 \subsubsection{Setup function}
 \subsubsection{Push button with debouncing function}
 \subsubsection{Heart Beat with the timer function}
+\subsubsection{5 second LED on with timer function}
 \subsubsection{Software source code}
 
 \section{Result}
 
+\printbibliography
+
+
+
+\newpage
 
 
 
 
 
-
-
+\layout
 
 \end{document}
