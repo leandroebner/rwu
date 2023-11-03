@@ -12,6 +12,7 @@ void setup(){
 pinMode(led, OUTPUT);              //maps the led to physical output pin
 pinMode(button, INPUT_PULLUP);     //maps the button to physical input pin WITH INTERNAL PULLUP
 pinMode(13, OUTPUT);               //declares the inbuild LED of the arduino nano as an output
+
 }
 
 void loop(){
@@ -27,3 +28,4 @@ if(millis() - hb >= 250){
   digitalWrite(13, !digitalRead(13));
   hb = millis();}
 }
+
