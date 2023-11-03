@@ -5,7 +5,7 @@
 
 \documentclass{scrartcl}                    % use KOMA-Script class "article"
 \usepackage{rwudefs}                        % use RWU template
-\usepackage[style=nature]{biblatex}        % required to use external bibliography file
+\usepackage[style=nature]{biblatex}         % required to use external bibliography file
 \addbibresource{bibliography.bib}           % main directory for bibliography
 \usepackage[automark]{scrlayer-scrpage}     % use custom header and footer
 \clearpairofpagestyles                      % clear default values
@@ -19,6 +19,10 @@
 \usepackage{wrapfig}                        % package to embedd smaller pictures more appeiling
 \usepackage{layout}                         % for debugging typeset only
 \usepackage{hyperref}                       % allows for links in references and labels
+\usepackage{listings}                       % required to embed code
+
+\lstset{language=C++}
+
 
 % main code:
 
@@ -85,31 +89,39 @@ The aim of the “Task 1. Controlling an LED using a pushbutton and an Arduino N
 \section{Hardware design and development}
     \subsection{Block diagram}
 
-     \begin{wrapfigure}{l}{0.6\textwidth}
+     \begin{wrapfigure}{l}{0.5\textwidth}
         \centering
-        \includesvg[width=0.6\textwidth]{graphicx/block_diagram}
+        \includesvg[width=0.5\textwidth]{graphicx/block_diagram}
         \caption{Block diagram of the circuit.}
         \label{block_diagram}
     \end{wrapfigure}
 
-    Connecting the hardware together is already given. In summary, the circuit consists of one sensor and one actor. Therefore, we need to have one input and output respectively. The button as well as the LED with a suitable resistor (i.e. 220\(\Omega\)) is hooked up to one of the GPIO pins of the Arduino each. There is a wide variety of different pins to choose one, in my example I will use the pin 3 to drive the led and pin 4 to sense if the button has been pressed. These connections are illustrated as simplex conecctions while the PC connection is visualized as a duplex connection. This is because the PC provides power as well as serial communication to upload code via the USB interface. Also, even tough the terms \emph{Arduino} and \emph{Microcontroller} are used as synonyms in this report, this is not precisely true. The Arduino is a sort of breakout \emph{PCB} with attached components to work easier with the actual microcontroller. See figure \ref{block_diagram}. To be able to choose appropriate pins, one can follow the so called \emph{pinout} of the Arduino, which is a reference for what each pin is cabable of and used for. Also, certain functions i.e. \emph{PWM} which can only be accessed at specific pins. An example of a pinout is given in Figure \ref{pinout}.
+    Connecting the hardware together is already given. In summary, the circuit consists of one sensor and one actor. Therefore, we need to have one input and output respectively. The button as well as the LED with a suitable resistor (i.e. 220\(\Omega\)) is hooked up to one of the GPIO pins of the Arduino each. There is a wide variety of different pins to choose one, in my example I will use the pin 3 to drive the led and pin 4 to sense if the button has been pressed. These connections are illustrated as simplex conecctions while the PC connection is visualized as a duplex connection. This is because the PC provides power as well as serial communication to upload code via the USB interface. Also, even tough the terms \emph{Arduino} and \emph{Microcontroller} are used as synonyms in this report, this is not precisely true. The Arduino is a sort of breakout \emph{PCB} with attached components to work easier with the actual microcontroller. See figure \ref{block_diagram}. To be able to choose appropriate pins, one can follow the so called \emph{pinout} of the Arduino, which is a reference for what each pin is cabable of and used for. Also, certain functions i.e. \emph{PWM} which can only be accessed at specific pins. An example of a pinout is given in Figure \ref{pinout}. 
 
     \begin{figure}[h]
         \centering
-        \includegraphics[width=0.3.5\textwidth]{graphicx/pinout}
+        \includegraphics[width=0.4\textwidth]{graphicx/pinout}
         \caption{Graphical representation of the pinout of an Arduino Nano. \cite{pinout}}
         \label{pinout}
     \end{figure}    
 
+    \newpage
     
     \subsection{Schematic}
+
+    The circuit was then build on a breadboard accordingly to the pinout as well as the wirering diagram (schematic) as seen as in figure \ref{schem}. One important factor to note hier is that there is no additional resistor for the pushbutton needed. The button simply connects to ground when pushed. This is only working because the microcontroller is equipped with an internal pull-up resistor at pin 4. To make use of the internal pull-up, the input needs to be declared the following way: 
+    \par
+    \verb|pinMode(PIN, INPUT_PULLUP);|
+    \par
     
-    \begin{figure}
+    \begin{figure}[h]
         \centering
-        \includegraphics[width=0.2\textwidth]{graphicx/schem}
-        \caption{mehr text}
+        \includegraphics[width=0.4\textwidth]{graphicx/schem}
+        \caption{Simplified schematic with common ground from the arduino and nets corresponding to the two utulized pins. \cite{schem}}
         \label{schem}
     \end{figure}    
+
+    \newpage
     
 \subsection{Hardware setup}
 
