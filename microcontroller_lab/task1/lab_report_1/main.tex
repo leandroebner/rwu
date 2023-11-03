@@ -5,7 +5,7 @@
 
 \documentclass{scrartcl}                    % use KOMA-Script class "article"
 \usepackage{rwudefs}                        % use RWU template
-\usepackage[style=nature]{biblatex}         % required to use external bibliography file
+\usepackage[style=ieee]{biblatex}         % required to use external bibliography file
 \addbibresource{bibliography.bib}           % main directory for bibliography
 \usepackage[automark]{scrlayer-scrpage}     % use custom header and footer
 \clearpairofpagestyles                      % clear default values
@@ -34,7 +34,8 @@
 \maketitle
 
 \begin{abstract}
-Grundpraktikum 3: \\ Controlling an LED using a pushbutton and an Arduino Nano.
+Grundpraktikum 3: \\ Controlling an LED using a pushbutton and an Arduino Nano. \\
+Written with the help of KOMA-Script in \LaTeXe{}.
 \end{abstract}
 
 \tableofcontents
@@ -54,7 +55,7 @@ The aim of the “Task 1. Controlling an LED using a pushbutton and an Arduino N
 \section{Basic theory}
     \subsection{Arduino Nano}
     
-    The \emph{Arduino Nano} is a development board that is based on the \emph{ATmega328P} microcontroller. It is part of the Arduino family of open source hardware and software products, which are designed to facilitate electronic prototyping. The Nano model, in particular, is known for it's small size, affordability, and a wide range of applications. Thus it can be used easily with the \emph{Arduino IDE} which is an ideal choice for both beginners and experienced users. The microcontroller is equipped with 32kB of flash memory, 2kB of SRAM, and 1kB of EEPROM. It can control other devices and components with the help of 14 digital input/output pins and 8 analog pins. Powering and uploading the code can be done by utilising the modern USB-C connector of the Arduino Nano. A more detailed figure of the pinout will be given at Figure \ref{pinout}.
+    The \emph{Arduino Nano} is a development board that is based on the \emph{ATmega328P} microcontroller. It is part of the Arduino family \cite{arduino} of open source hardware and software products, which are designed to facilitate electronic prototyping. The Nano model, in particular, is known for it's small size, affordability, and a wide range of applications. Thus it can be used easily with the \emph{Arduino IDE} which is an ideal choice for both beginners and experienced users. The microcontroller is equipped with 32kB of flash memory, 2kB of SRAM, and 1kB of EEPROM. It can control other devices and components with the help of 14 digital input/output pins and 8 analog pins. Powering and uploading the code can be done by utilising the modern USB-C connector of the Arduino Nano. A more detailed figure of the pinout will be given at Figure \ref{pinout}.
     
     \begin{figure}[h]
         \centering
@@ -72,7 +73,7 @@ The aim of the “Task 1. Controlling an LED using a pushbutton and an Arduino N
         \label{button}
     \end{wrapfigure}
     
-    The \emph{pushbutton} that was given is a simple momentary switch used as an user input. The button consist of four metal pins, two of them are connected however. When the button is pressed the pair will get connected. Therefore, the button is forming a temporary electrical connection. A spring alike part inside of the button enclosure ensures to break the connection once again as soon as the button gets released. To integrate pushbuttons with an Arduino or a similar microcontroller, they are typically connected to specific digital input pins and configured to respond to button presses by sampling the voltage levels. One common challenge when working with pushbuttons is a phenomenon called \emph{bouncing}. When a button is pressed or released, the metal contacts can make multiple, rapid electrical connections and disconnections due to mechanical vibrations. Such oscillations which the microcontroller interprets as multiple button presses can lead to unexpected behaviour. \emph{Debouncing} is a process used to filter out these unwanted multiple signal changes and guarantees the input behaves the way a user would expect. 
+    The \emph{pushbutton} that was given is a simple momentary switch used as an user input. The button consist of four metal pins, two of them are connected however. When the button is pressed the pair will get connected. Therefore, the button is forming a temporary electrical connection. A spring alike part inside of the button enclosure ensures to break the connection once again as soon as the button gets released. To integrate pushbuttons with an Arduino or a similar microcontroller, they are typically connected to specific digital input pins and configured to respond to button presses by sampling the voltage levels. One common challenge when working with pushbuttons is a phenomenon called \emph{bouncing}. When a button is pressed or released, the metal contacts can make multiple, rapid electrical connections and disconnections due to mechanical vibrations. Such oscillations which the microcontroller interprets as multiple button presses can lead to unexpected behaviour. \emph{Debouncing} is a process used to filter out these unwanted multiple signal changes and guarantees the input behaves the way a user would expect. \cite{debounce}
 
     \subsection{LED}
 
@@ -92,11 +93,11 @@ The aim of the “Task 1. Controlling an LED using a pushbutton and an Arduino N
      \begin{wrapfigure}{l}{0.5\textwidth}
         \centering
         \includesvg[width=0.5\textwidth]{graphicx/block_diagram}
-        \caption{Block diagram of the circuit.}
+        \caption{Block diagram of the circuit. \cite{block}}
         \label{block_diagram}
     \end{wrapfigure}
 
-    Connecting the hardware together is already given. In summary, the circuit consists of one sensor and one actor. Therefore, we need to have one input and output respectively. The button as well as the LED with a suitable resistor (i.e. 220\(\Omega\)) is hooked up to one of the GPIO pins of the Arduino each. There is a wide variety of different pins to choose one, in my example I will use the pin 3 to drive the led and pin 4 to sense if the button has been pressed. These connections are illustrated as simplex conecctions while the PC connection is visualized as a duplex connection. This is because the PC provides power as well as serial communication to upload code via the USB interface. Also, even tough the terms \emph{Arduino} and \emph{Microcontroller} are used as synonyms in this report, this is not precisely true. The Arduino is a sort of breakout \emph{PCB} with attached components to work easier with the actual microcontroller. See figure \ref{block_diagram}. To be able to choose appropriate pins, one can follow the so called \emph{pinout} of the Arduino, which is a reference for what each pin is cabable of and used for. Also, certain functions i.e. \emph{PWM} which can only be accessed at specific pins. An example of a pinout is given in Figure \ref{pinout}. 
+    The way how to connect the hardware together is already given. In summary, the circuit consists of one sensor and one actor. Therefore, we need to have one input and output respectively. The button as well as the LED with a suitable resistor (i.e. 220\(\Omega\)) is hooked up to one of the GPIO pins of the Arduino each. There is a wide variety of different pins to choose one, in my example I will use the pin 3 to drive the led and pin 4 to sense if the button has been pressed. These connections are illustrated as simplex conecctions while the PC connection is visualized as a duplex connection. This is because the PC provides power as well as serial communication to upload code via the USB interface. Also, even tough the terms \emph{Arduino} and \emph{Microcontroller} are used as synonyms in this report, this is not precisely true. The Arduino is a sort of breakout \emph{PCB} with attached components to work easier with the actual microcontroller. See figure \ref{block_diagram}. To be able to choose appropriate pins, one can follow the so called \emph{pinout} of the Arduino, which is a reference for what each pin is cabable of and used for. Also, certain functions i.e. \emph{PWM} which can only be accessed at specific pins. An example of a pinout is given in Figure \ref{pinout}. 
 
     \begin{figure}[h]
         \centering
@@ -121,30 +122,43 @@ The aim of the “Task 1. Controlling an LED using a pushbutton and an Arduino N
         \label{schem}
     \end{figure}    
 
+    \subsection{Hardware setup}
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{graphicx/hardware}
+        \caption{Simplified schematic with common ground from the arduino and nets corresponding to the two utulized pins.}
+        \label{hardware}
+    \end{figure}  
+
     \newpage
     
-\subsection{Hardware setup}
 
 \section{Software Design and development}
 \subsection{Flowchart}
 
-\begin{figure}
+\begin{figure}[h]
     \centering
-    \includesvg[width=0.2\textwidth]{graphicx/flowchart}
-    \caption{}
+    \includesvg[width=0.7\textwidth]{graphicx/flowchart}
+    \caption{Flowchart of the final code. \\ The \emph{heartbeat} is excluded for simplicity reasons. \cite{flow}}
     \label{flowchart}
 \end{figure}
 
-\subsection{Functions}
-\subsubsection{Initialize variable}
-\subsubsection{Setup function}
-\subsubsection{Push button with debouncing function}
-\subsubsection{Heart Beat with the timer function}
-\subsubsection{5 second LED on with timer function}
-\subsubsection{Software source code}
+    \subsection{Functions}
+    \subsubsection{Initialize variable}
+    \subsubsection{Setup function}
+    \subsubsection{Push button with debouncing function}
+    \subsubsection{Heart Beat with the timer function}
+    \subsubsection{5 second LED on with timer function}
+    \subsubsection{Software source code}
+
+    \newpage
+
 
 \section{Result}
 
+
+\newpage
 \printbibliography
 
 
