@@ -193,7 +193,7 @@ The aim of the “Task 1. Controlling an LED using a pushbutton and an Arduino N
 
     
     \subsubsection{Heart Beat with the timer function}
-    The heart beat timer is based on the the \texttt{millis()} function too. This \texttt{if} conditions fulfils the simple function of a timer and toggles the onboard LED of the Arduino on pin 13 in a very similar way, then the button-toggling mechanism.
+    The heart beat timer is based on the the \texttt{millis()} function too. This \texttt{if} condition fulfils the simple function of a timer and toggles the onboard LED of the Arduino on pin 13 in a very similar way, then the button-toggling mechanism.
     
     \begin{lstlisting}
     if(millis() - hb >= 250){
@@ -269,7 +269,7 @@ The aim of the “Task 1. Controlling an LED using a pushbutton and an Arduino N
     \item Implemented the Timer to Create the Heartbeat:
           I learned how to create a heartbeat signal using the Arduino. This signal toggles the built-in LED every 250ms, serving as a godo visual indicator that the program is running correctly. This feature provided feedback from the Arduino back to the user of the system.
     \item Implemented a Timing Function for LED Control:
-          In this section, I developed a timing function that enhanced the the complexity and logic of the overal code. When the pushbutton was triggered, the LED should remained on for 5 seconds before automatically turning off independently. Pressing the button again toggled the LED back on or off. Besides complexity by utiliazing multiple \texttt{millies()} functions, this task also added a layer of functionality to the system. This can be an automatic function which gets called if the user forgot about turning a device off.
+          In this section, I developed a timing function that enhanced the the complexity and logic of the overal code. When the pushbutton was triggered, the LED should remained on for 5 seconds before automatically turning off independently. Pressing the button again toggled the LED back on or off. Besides complexity by utiliazing multiple \texttt{millis()} functions, this task also added a layer of functionality to the system. This can be an automatic function which gets called if the user forgot about turning a device off.
 \end{enumerate}
 By successfully completing this task, I not only built a functional hardware setup but also developed important software skills related to input handling, dealing with noise and other unwanted real-world phenomena and timing functions in Arduino programming. These fundamental skills laid the groundwork for more complex projects and applications.
 
