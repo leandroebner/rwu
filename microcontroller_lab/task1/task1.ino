@@ -24,7 +24,7 @@ if(sample == 0 && memory == 1 && millis() - ref >= debounce){        //triggers 
   ref = millis();}                                                   //creates timestamp to keep track of upcoming debouncing
 if(output == 1 && millis() - ref >= 5000){output = 0;}               //checks for 5s timeout
 digitalWrite(led, output);                                           //updates physical output pin in respect to virtual output AND timeout
-if(millis() - hb >= 250){
+if(millis() - hb >= 250){                                            //implements the heartbeat functionality
   digitalWrite(13, !digitalRead(13));
   hb = millis();}
 }
