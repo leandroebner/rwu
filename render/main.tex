@@ -1,0 +1,279 @@
+% ------------------------------------------------------------------------------------------------
+% TeX template for university, written by Leandro Ebner 2023.
+% v0.9 beta, licensed under the GNU GPLv3, see "LICENSE" and <https://www.gnu.org/licenses/>
+% ------------------------------------------------------------------------------------------------
+
+\documentclass{scrartcl}                    % use KOMA-Script class "article"
+\usepackage{rwudefs}                        % use RWU template
+\usepackage[]{biblatex}                     % required to use external bibliography file, unfortunately IEEE is only available when comp. in overleaf
+\addbibresource{bibliography.bib}           % main directory for bibliography
+\usepackage[automark]{scrlayer-scrpage}     % use custom header and footer
+\clearpairofpagestyles                      % clear default values
+\setlength{\headheight}{53pt}               % adjust header to fit in RWU logo
+\ohead[\rwulogo]{\headmark}                 % set custom header
+\ofoot[\pagemark]{\pagemark}                % set custom footer
+\ifoot{© Leandro Ebner 2023}                % copyright emblem
+\usepackage{graphicx}                       % required for inserting images
+\graphicspath{{graphicx/}}                  % main directory for images
+\usepackage{svg}                            % ability to use svg 
+\usepackage{wrapfig}                        % package to embedd smaller pictures more appeiling
+\usepackage{layout}                         % for debugging typeset only
+\usepackage{hyperref}                       % allows for links in references and labels
+\usepackage{listings}                       % required to embed code
+
+\lstset{language=C++,
+numbers=left, keywordstyle=\color{magenta}\bfseries}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,      
+    urlcolor=cyan,
+    pdftitle={Leandro Ebner Task 1},
+    pdfpagemode=FullScreen,
+    }
+
+% main code:
+
+\begin{document}
+
+\title{Microcontroller Task 1}
+\author{Ebner, Leandro et al.\thanks{Neha Bhushan Borole, Matr. Nr.: 16740051 and Caleb Patrick DSouza, Matr. Nr.: 28840332} \\ Matr. Nr.: 14740284}
+\date{\today}
+\maketitle
+
+\begin{abstract}
+Grundpraktikum 3: \\ Controlling an LED using a pushbutton and an Arduino Nano. \\
+Written with the help of KOMA-Script in \LaTeXe{}.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}
+
+The aim of the “Task 1. Controlling an LED using a pushbutton and an Arduino Nano” is to make the participants of the lab able to do the following task below:
+
+\begin{enumerate}
+    \item Create the hardware setup.
+    \item Implement the toggle LED as a result of the push button action (press and release).
+    \item Implement the debounce function for the push button.
+    \item Implement the timer to create the heart beat.
+    \item Implement a timing function that will leave the LED on for 5s after pressing the button and will toggle it off or back on when the button is pressed again.
+\end{enumerate}
+
+\section{Basic theory}
+    \subsection{Arduino Nano}
+    
+    The \emph{Arduino Nano} is a development board that is based on the \emph{ATmega328P} microcontroller. It is part of the Arduino family \cite{arduino} of open source hardware and software products, which are designed to facilitate electronic prototyping. The Nano model, in particular, is known for it's small size, affordability, and a wide range of applications. Thus it can be used easily with the \emph{Arduino IDE} which is an ideal choice for both beginners and experienced users. The microcontroller is equipped with 32kB of flash memory, 2kB of SRAM, and 1kB of EEPROM. It can control other devices and components with the help of 14 digital input/output pins and 8 analog pins. Powering and uploading the code can be done by utilising the modern USB-C connector of the Arduino Nano. A more detailed figure of the pinout is given at figure \ref{pinout}.
+    
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{graphicx/nano}
+        \caption{The Arduino Nano with pin headers for GPIOs and USB-C connector to provide power and for uploading the code with a computer. \cite{nano}}
+        \label{nano}
+    \end{figure} 
+    
+    \subsection{Push button}
+
+    \begin{wrapfigure}{l}{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.2\textwidth]{graphicx/button}
+        \caption{Push button in 2 common pin configuration. \cite{button}}
+        \label{button}
+    \end{wrapfigure}
+    
+    The \emph{pushbutton} that was given is a simple momentary switch used as an user input. The button consist of four metal pins, two of them are connected however. When the button is pressed the pair will get connected. Therefore, the button is forming a temporary electrical connection. A spring alike part inside of the button enclosure ensures to break the connection once again as soon as the button gets released. To integrate pushbuttons with an Arduino or a similar microcontroller, they are typically connected to specific digital input pins and configured to respond to button presses by sampling the voltage levels. One common challenge when working with pushbuttons is a phenomenon called \emph{bouncing}. When a button is pressed or released, the metal contacts can make multiple, rapid electrical connections and disconnections due to mechanical vibrations. Such oscillations which the microcontroller interprets as multiple button presses can lead to unexpected behaviour. \emph{Debouncing} is a process used to filter out these unwanted multiple signal changes and guarantees the input behaves the way a user would expect. \cite{debounce}
+
+    \subsection{LED}
+
+    \begin{wrapfigure}{r}{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.2\textwidth]{graphicx/led} 
+        \caption{3mm red LED, the bigger leg indicates the anode (+). \cite{led}}
+        \label{led}
+    \end{wrapfigure}
+
+    An LED is the the short form of \emph{light emitting diode}. This type of semiconductor is either used as a light source or like in this case, to visualize various signal states and conditions. It consists of a \emph{pn-junction} where light gets emitted due to a effect known as \emph{carrier recombination}. LEDs in general work with really small amounts of current (typically \verb|<|5mA) and are fairly simple to use. Because of the restricted current an Arduino can provide to an output pin, LEDs are very often used in such applications. They do require a current limiting resistor in series with them in the given circuit. This is in order to operate at the LED at the higher 5V \emph{TTL} logic level the Arduino provides compared to their lower internal forward voltage.
+
+    \newpage
+    
+\section{Hardware design and development}
+    \subsection{Block diagram}
+
+    \begin{wrapfigure}{l}{0.5\textwidth}
+        \centering
+        \includesvg[width=0.5\textwidth]{graphicx/block_diagram}
+        \caption{Block diagram of the circuit. \cite{block}}
+        \label{block_diagram}
+    \end{wrapfigure}
+
+    The way how to connect the hardware together is already given. In summary, the circuit consists of one sensor and one actor. Therefore, we need to have one input and output respectively. The button as well as the LED with a suitable resistor (i.e. 220\(\Omega\)) is hooked up to one of the GPIO pins of the Arduino each. There is a wide variety of different pins to choose from, in my example, I will use the pin 3 to drive the LED and pin 4 to sense if the button has been pressed. These connections are illustrated as simplex conecctions while the PC connection is visualized as a duplex connection. This is because the PC provides power as well as serial communication to upload code via the USB interface. Also, even tough the terms \emph{Arduino} and \emph{Microcontroller} are used as synonyms in this report, this is not precisely true. The Arduino is a sort of breakout \emph{PCB} with attached components to work easier with the actual microcontroller. See figure \ref{block_diagram}. To be able to choose appropriate pins, one can follow the so called \emph{pinout} of the Arduino, which is a reference for what each pin is cabable of and useful for. Also, certain functions i.e. \emph{PWM} are labled at what specific pins they are accessible. An example of a pinout is given in figure \ref{pinout}. 
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.4\textwidth]{graphicx/pinout}
+        \caption{Graphical representation of the pinout of an Arduino Nano. \cite{pinout}}
+        \label{pinout}
+    \end{figure}    
+
+    \newpage
+    
+    \subsection{Schematic}
+
+    The circuit was then build on a breadboard accordingly to the pinout as well as the wire-ring diagram (schematic) as seen as in figure \ref{schem}. One important factor to note here is that there is no additional resistor for the pushbutton needed. The button simply connects to ground when pushed. This is only working because the microcontroller is equipped with an internal pull-up resistor at pin 4. To make use of the internal pull-up, the input needs to be declared the following way: 
+    \newline
+
+    \verb|pinMode(PIN, INPUT_PULLUP);|
+    \par
+    
+    \begin{figure}[h]
+        \raggedright
+        \includegraphics[width=0.4\textwidth]{graphicx/schem}
+        \caption{Simplified schematic with common ground from the Arduino and nets corresponding to the two utilized pins. \cite{schem}}
+        \label{schem}
+    \end{figure}    
+
+    \subsection{Hardware setup}
+
+    \begin{figure}[h]
+        \raggedright
+        \includegraphics[width=0.45\textwidth]{graphicx/hardware}
+        \caption{The hardware fully build on a breadboard and connected with a USB-C cable.}
+        \label{hardware}
+    \end{figure}  
+
+    \newpage
+    
+\section{Software Design and development}
+\subsection{Flowchart}
+
+    \begin{figure}[h]
+        \centering
+        \includesvg[width=0.7\textwidth]{graphicx/flowchart}
+        \caption{Flowchart of the final code. \\ The \emph{heartbeat} functionality is excluded for simplicity reasons. \cite{flow}}
+        \label{flowchart}
+    \end{figure}
+
+    
+\subsection{Functions}
+    \subsubsection{Initialize variable}
+    In the code, I used five integers and three unsigned long variables. The two constants marked as constant shall never change because those are used to map each name of sensor and actor (in our case one button and one LED) to a specific pin, depending on the hardware wire-ring. The other three integers are used to store the last state of the button and for main toggle mechanism (virtual "output" variables which always descibres how the physical output should behave). The variables \texttt{ref} and \texttt{hb} are essential time "markers" to keep track of time that has already past, therefore checking if certain time dependend actions should be called (auto timeout and heartbeat). The remaining time variable allows the user to change the debounce-time manually depending on different hardware and requirements, in my code also referred to cooldown-time. This time is 100ms per default and works well with the supplied hardware. The variable is serves the purpose to adjust the time where further button changes will be ignored in order to be certain that oscillations will not interfere.
+    \newpage
+    
+    \begin{lstlisting}
+    int sample;                       
+    int memory;                      
+    int output;                      
+    unsigned long ref;            
+    unsigned long hb;
+    const int led = 3;               
+    const int button = 4;           
+    unsigned long debounce = 100;    
+    \end{lstlisting}
+    
+    \subsubsection{Setup function}
+    The \texttt{void setup()} function is a special type of function which only gets called once during power-up or reboot of the microcontroller. It is commonly used to set starting conditions for the main code running in the so called \texttt{void loop()} function. The majority of my variables change over time, therefore need some sort of starting condition. I designed my code to be as effective and simple as possible, therefore making use of the fact that unwritten starting values for variables simply remain zero. The only task the \texttt{void setup()} executes is to set up the pin modes of the Arduino according to the pin number and connected component. As mentioned on page \pageref{schem} , it is important to set the button pin with the internal pull-up of the ATmega microcontroller enabled.
+    
+    \begin{lstlisting}
+    pinMode(led, OUTPUT);
+    pinMode(button, INPUT_PULLUP); 
+    pinMode(13, OUTPUT);  
+    \end{lstlisting}
+
+    
+    \subsubsection{Push button with debouncing function}
+    The toggle mechanism is activated as soon as there is a falling edge detected on the input (falling edge due to normally-high logic). This is achieved by using two variables and sample them in a chronological dependet order. If the mismatch \texttt{memory=1} and \texttt{sample=0} exists, this correlates with the falling edge of the input indicating a button press. Because the current sample value gets written into the \texttt{memory} variable in the next loop cycle, this condition is only valid once, thus must be resetted to be triggered once more. Speaking of a momentary pushbutton, you have to release the button first before the input can logical sense another falling edge. The \texttt{if} condition combines the debounce characteristic as well, checking whether the new value got sampled in a valid time frame. This is only the case if there hasn't been a signal change during a certin time windowm. The variable \texttt{unsigned long debounce} describes that window numerically. 
+    
+    \begin{lstlisting}
+    memory = sample;                                                     
+    sample = digitalRead(button);                                       
+    if(sample == 0 && memory == 1 && millis() - ref >= debounce){       
+      output = !output;}                                               
+    \end{lstlisting}
+
+    
+    \subsubsection{Heart Beat with the timer function}
+    The heart beat timer is based on the the \texttt{millis()} function too. This \texttt{if} condition fulfils the simple function of a timer and toggles the onboard LED of the Arduino on pin 13 in a very similar way, then the button-toggling mechanism.
+    
+    \begin{lstlisting}
+    if(millis() - hb >= 250){
+      digitalWrite(13, !digitalRead(13));
+      hb = millis();}
+    \end{lstlisting}
+    
+    \subsubsection{5 second LED on with timer function}
+    The auto-off or timeout is simply implemented by checking through each loop cycle if the LED has been on for longer. There is only one "master" line which adjusts the output accordinly to the virtual output variable of the logic. Because this line has multiple tasks, it's not exclusively mentioned in one paragraph only. Please refer to the attached source code (figure \ref{code}).
+    
+    \begin{lstlisting}
+    if(output == 1 && millis() - ref >= 5000){output = 0;} 
+    \end{lstlisting}
+
+    \subsubsection{Software source code}
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=1\textwidth]{graphicx/code}
+        \caption{Screenshot taken in the Arduino IDE displaying the whole code with commentary as well.}
+        \label{code}
+    \end{figure}
+
+    \newpage
+
+    Due to typesetting reasons, the following source code solely serves the purpose to be editable and therefore got optimized for readability without keeping the original comments/explanations per line. An outlook how the full and final source code looks like in the Arduino IDE is attached in the screenshot figure \ref{code} as well. The code to compile this \LaTeXe document into .ps, .dvi or proper .pdf format as well as other useful information can be found at the author's official GitHub repository \href{https://github.com/leandroebner/rwu}{https://github.com/leandroebner/rwu}.
+    
+    \begin{lstlisting}
+    int sample;                        
+    int memory;                        
+    int output;                        
+    unsigned long ref;                 
+    unsigned long hb;                  
+    const int led = 3;                 
+    const int button = 4;           
+    unsigned long debounce = 100;     
+    
+    void setup(){
+    
+    pinMode(led, OUTPUT);              
+    pinMode(button, INPUT_PULLUP);   
+    pinMode(13, OUTPUT);    
+    
+    }
+    
+    void loop(){
+    
+    memory = sample;                                                  
+    sample = digitalRead(button);                                   
+    if(sample == 0 && memory == 1 && millis() - ref >= debounce){  
+      output = !output;                                            
+      ref = millis();}                                            
+    if(output == 1 && millis() - ref >= 5000){output = 0;}        
+    digitalWrite(led, output);                                        
+    if(millis() - hb >= 250){
+      digitalWrite(13, !digitalRead(13));
+      hb = millis();}
+    }  
+    \end{lstlisting}
+
+
+    \newpage
+
+\section{Result}
+
+\begin{enumerate}
+    \item Created the Hardware Setup: 
+          I learned how to set up the required hardware components, including the Arduino Nano, a pushbutton, an LED, and a current-limiting resistor on a breadboard. This step ensured a physical foundation for the project.
+    \item Implemented the Toggle LED as a Result of the Push Button Action (Press and Release):
+          I gained hands-on experience in coding the Arduino to detect the rising/falling edge of a digital pushbutton signal. When the button was pressed and released, it toggled the state of an LED (ON/OFF), creating a responsive control system.
+    \item Implemented the Debounce Function for the Push Button:
+          To enhance the reliability and accuracy of the system, I implemented a debouncing function in software. This function helped eliminate false readings caused by the mechanical bouncing of the pushbutton contacts. It ensured that only one distinct button press or release was registered.
+    \item Implemented the Timer to Create the Heartbeat:
+          I learned how to create a heartbeat signal using the Arduino. This signal toggles the built-in LED every 250ms, serving as a godo visual indicator that the program is running correctly. This feature provided feedback from the Arduino back to the user of the system.
+    \item Implemented a Timing Function for LED Control:
+          In this section, I developed a timing function that enhanced the the complexity and logic of the overal code. When the pushbutton was triggered, the LED should remained on for 5 seconds before automatically turning off independently. Pressing the button again toggled the LED back on or off. Besides complexity by utiliazing multiple \texttt{millis()} functions, this task also added a layer of functionality to the system. This can be an automatic function which gets called if the user forgot about turning a device off.
+\end{enumerate}
+By successfully completing this task, I not only built a functional hardware setup but also developed important software skills related to input handling, dealing with noise and other unwanted real-world phenomena and timing functions in Arduino programming. These fundamental skills laid the groundwork for more complex projects and applications.
+
+\newpage
+\printbibliography
+
+\end{document}
