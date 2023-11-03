@@ -1,3 +1,4 @@
+
 name: Build LaTeX document
 on: [push]
 jobs:
@@ -9,8 +10,8 @@ jobs:
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v3
         with:
-          root_file: microcontroller_lab/task1/lab_report_1/main.tex
-          latexmk_use_xelatex: true
+          root_file: main.tex
+          latexmk_use_xelatex: false
       - name: Upload PDF file
         uses: actions/upload-artifact@v3
         with:
