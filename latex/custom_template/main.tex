@@ -12,7 +12,7 @@
 \setlength{\headheight}{53pt}               % adjust header to fit in RWU logo
 \ohead[\rwulogo]{\headmark}                 % set custom header
 \ofoot[\pagemark]{\pagemark}                % set custom footer
-\ifoot{© Leandro Ebner 2023}                % copyright emblem
+\ifoot[]{© Leandro Ebner 2023}              % copyright emblem
 \usepackage{graphicx}                       % required for inserting images
 \graphicspath{{graphicx/}}                  % main directory for images
 \usepackage{svg}                            % ability to use svg 
@@ -30,9 +30,11 @@
     citecolor=blue,      
     urlcolor=cyan,
     pdftitle={Leandro Ebner Task 1},
-    pdfpagemode=FullScreen,}
+    pdfpagemode=FullScreen}
+    
+\ifoot[\includegraphics{graphicx/gplv3-or-later.png}]{}
+\cfoot[Copyright 2023 © Leandro Ebner \\ Licensed under the GNU GPLv3, \\ see \href{https://www.gnu.org/licenses/gpl.html}{https://www.gnu.org/licenses/gpl.html}]{}   
 
-\ifoot[\includegraphics{graphicx/gplv3-or-later.png}]
 
 % main code:
 
@@ -50,7 +52,6 @@ Written with the help of KOMA-Script in \LaTeXe{}.
 
 \tableofcontents
 \newpage
-w
 \printbibliography
 
 \end{document}
