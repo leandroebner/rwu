@@ -1,3 +1,3 @@
 # RWU
 
-The main directories so far are microcontroller_lab & computer_technology
+The main directories so far are microcontroller_lab, circuit_design & computer_technology
