@@ -27,7 +27,7 @@ if(sample == 0 && memory == 1 && millis() - ref1 >= debounce){
   
 analogWrite(led, counter);                                 //creates timestamp to keep track of upcoming debouncing
 
-i                                  
+                    
 if(millis() - ref3 >= 250){                                          //implements the heartbeat functionality
   digitalWrite(inbuilt_led, !digitalRead(inbuilt_led));
   ref3 = millis();}
