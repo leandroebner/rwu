@@ -34,13 +34,14 @@ if(millis() - ref2 >= 10){                                           //triggers 
   else{counter = 0;}                                                 //reset brightness if necessary
   ref2 = millis();}                                                  //creates timestamp to time couning
 
-analogWrite(led, counter);                                           //set led output                                
+analogWrite(led, counter);                                           //set led output
+Serial.println(analogRead(pwm_input), DEC);                          //send analog value back to pc                            
 
 if(millis() - ref3 >= 250){                                          //implements the heartbeat functionality
   digitalWrite(inbuilt_led, !digitalRead(inbuilt_led));
   ref3 = millis();}
   
-Serial.println(analogRead(pwm_input), DEC);                          //send analog value back to pc
+
 
 
 }
