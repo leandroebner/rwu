@@ -10,7 +10,7 @@
 \usepackage[automark]{scrlayer-scrpage}     % use custom header and footer
 \clearpairofpagestyles                      % clear default values
 \setlength{\headheight}{53pt}               % adjust header to fit in RWU logo
-\setlength{\footheight}{41pt} 
+\setlength{\footheight}{41pt}               % adjusts footer to fit gpl logo
 \ohead[\rwulogo]{\headmark}                 % set custom header
 \ofoot[\pagemark]{\pagemark}                % set custom footer
 \ifoot[]{© Leandro Ebner 2023}              % copyright emblem
@@ -21,11 +21,12 @@
 \usepackage{layout}                         % for debugging typeset only
 \usepackage{hyperref}                       % allows for links in references and labels
 \usepackage{listings}                       % required to embed code
-\lstset{                                    % settings for package "listings"
+
+\lstset{                                           % settings for package "listings"
     language=C++,
     numbers=left, 
     keywordstyle=\color{magenta}\bfseries}
-\hypersetup{                                % settings for package "hyperref"
+\hypersetup{                                       % settings for package "hyperref"
     colorlinks=true,
     linkcolor=blue,
     citecolor=blue,      
