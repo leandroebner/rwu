@@ -7,8 +7,8 @@ unsigned long ref2;                //time stamp for pwm
 unsigned long ref3;                //time stamp for heartbeat
 const int led = 3;                 //defines the led pin
 const int button = 4;              //defines the button pin
-const int inbuilt_led = 13;        //defines the inbuilt led for the arduino nano board
-const int pwm_input = 7;           //deinfes the analog input for adc measurements
+const int inbuilt_led = 13;        //defines the inbuilt led pin for the arduino nano board
+const int pwm_input = 7;           //defines the analog input for adc measurements
 unsigned long debounce = 100;      //defines cooldown in ms for toggle and to avoid false triggering
 
 void setup(){
@@ -34,8 +34,8 @@ if(millis() - ref2 >= 10){                                           //triggers 
   else{counter = 0;}                                                 //reset brightness if necessary
   ref2 = millis();}                                                  //creates timestamp to time couning
 
-analogWrite(led, counter);                                           //set led output
-Serial.println(analogRead(pwm_input), DEC);                          //send analog value back to pc                            
+analogWrite(led, counter);                                           //set led output with calc pwm value
+Serial.println(analogRead(pwm_input), DEC);                          //send analog value of led voltage back to pc                            
 
 if(millis() - ref3 >= 250){                                          //implements the heartbeat functionality
   digitalWrite(inbuilt_led, !digitalRead(inbuilt_led));
