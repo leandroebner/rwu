@@ -18,8 +18,7 @@ pinMode(button, INPUT_PULLUP);     //maps the button to physical input pin with 
 pinMode(inbuilt_led, OUTPUT);      //maps the inbuild led of the arduino nano as an output (heartbeat function)
 pinMode(pwm_input, INPUT);         //maps the pwm signal at led as input
 Serial.begin(9600);                //opens serial connection to computer
-counter = 130;
-
+  
 }
 
 void loop(){
