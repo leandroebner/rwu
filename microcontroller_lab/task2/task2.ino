@@ -31,7 +31,7 @@ if(sample == 0 && memory == 1 && millis() - ref1 >= debounce){       //triggers 
 
 if(millis() - ref2 >= 10){                                           //triggers counter if time increment has passed
   if(output == 1 && counter < 255){counter++;}                       //if ramping conditions are met, increase the brightness
-  else{counter = 0;}                                                 //reset brightness if necessary
+  else{counter == 0;}                                                //reset brightness if necessary
   ref2 = millis();}                                                  //creates timestamp to time couning
 
 analogWrite(led, counter);                                           //set led output with calc pwm value
