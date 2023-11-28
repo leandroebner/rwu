@@ -1,6 +1,7 @@
 int dir;                      //variable for brightness ramping direction
 int pwm;                      //variable for pwm brightness
 int state;                    //main virtual toggle variable
+int sample;                   //sample input of button
 const int led = 3;            //maps led pin
 const int button = 2;         //maps button pin
 const int inbuilt_led = 13;   //maps inbuilt led pin
@@ -13,7 +14,7 @@ void setup() {
 pinMode(led, OUTPUT);                                             //defines led as an output
 pinMode(inbuilt_led, OUTPUT);                                     //defines inbuilt led as an output
 pinMode(button, INPUT_PULLUP);                                    //defines button as input
-attachInterrupt(digitalPinToInterrupt(button), isr, FALLING);     //set up interrupt routine, pin and mode
+attachInterrupt(digitalPinToInterrupt(button), isr, CHANGE);     //set up interrupt routine, pin and mode
 
 }
 
@@ -41,6 +42,8 @@ if(millis() - ref2 >= 250){                                       //implements t
 
 void isr() {
 
-if(millis() - ref3 > 150){state = !state;}                        //toggle main variable and check for debounce conditions
+sample = digitalRead(button);
+
+if(sample == 0 && millis() - ref3 > 100){state = !state;}                        //toggle main variable and check for debounce conditions
 
 }
