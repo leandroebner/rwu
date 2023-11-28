@@ -4,7 +4,7 @@ int state;
 const int led = 3;
 const int button = 2;
 const int inbuilt_led = 13;
-unsigned long ref;
+unsigned long ref1;
 unsigned long ref2;
 unsigned long ref3;
 
@@ -21,13 +21,13 @@ void loop() {
 
 analogWrite(led, pwm);
 
-if(state == 1 && dir == 0 && millis() - ref >= 5){
+if(state == 1 && dir == 0 && millis() - ref1 >= 5){
   pwm++;
-  ref = millis();}
+  ref1 = millis();}
 
-if(state  == 1 && dir == 1 && millis() - ref >= 5){
+if(state  == 1 && dir == 1 && millis() - ref1 >= 5){
   pwm--;
-  ref = millis();}
+  ref1 = millis();}
 
 if(pwm == 0){dir = 0;}
 if(pwm == 255){dir = 1;}
