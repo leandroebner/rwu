@@ -1,9 +1,22 @@
+#define DECODE_NEC
+#include <IRremote.hpp>;
+#include <Arduino.h>
+
+
+
+
 void setup() {
-  // put your setup code here, to run once:
+
+Serial.begin(115200);
+IrReceiver.begin(IR_RECEIVE_PIN); 
+
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+
+if (IrReceiver.decode()) {IrReceiver.printIRResultShort(&Serial);}
+Serial.println();
+IrReceiver.resume();
 
 }
