@@ -1,22 +1,21 @@
 #define DECODE_NEC
 #include <IRremote.hpp>;
-#include <Arduino.h>
-
-
-
+#include <Servo.h>
+Servo myservo;
 
 void setup() {
-
-Serial.begin(115200);
-IrReceiver.begin(IR_RECEIVE_PIN); 
-
+  
+IrReceiver.begin(2);
+myservo.attach(9);
 
 }
 
 void loop() {
 
-if (IrReceiver.decode()) {IrReceiver.printIRResultShort(&Serial);}
-Serial.println();
-IrReceiver.resume();
+if (IrReceiver.decode()){
+  if (IrReceiver.decodedIRData.command == 0x45) {myservo.write(5);}
+  if (IrReceiver.decodedIRData.command == 0x46) {myservo.write(175);}
+  if (IrReceiver.decodedIRData.command == 0x47) {}
+IrReceiver.resume();}
 
 }
