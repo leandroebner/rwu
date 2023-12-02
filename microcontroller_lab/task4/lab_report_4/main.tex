@@ -1,0 +1,77 @@
+% ------------------------------------------------------------------------------------------------
+% TeX template for university, written by Leandro Ebner 2023.
+% v0.1.0-beta, licensed under the GNU GPLv3, see "LICENSE" and <https://www.gnu.org/licenses/>
+% ------------------------------------------------------------------------------------------------
+
+\documentclass{scrartcl}                    % use KOMA-Script class "article"
+\usepackage{rwudefs}                        % use RWU template
+\usepackage{biblatex}                       % required to use external bibliography file, unfortunately IEEE is only available when comp. in overleaf
+\addbibresource{bibliography.bib}           % main directory for bibliography
+\usepackage[automark]{scrlayer-scrpage}     % use custom header and footer
+\clearpairofpagestyles                      % clear default values of header and footer
+\setlength{\headheight}{53pt}               % adjust header to fit in RWU logo
+\setlength{\footheight}{41pt}               % adjusts footer to fit GPL logo
+\ohead[\rwulogo]{\headmark}                 % set custom header
+\ofoot[\pagemark]{\pagemark}                % set custom footer
+\ifoot[]{© Leandro Ebner 2023}              % copyright emblem
+\usepackage{graphicx}                       % required for inserting images
+\graphicspath{{graphicx/}}                  % main directory for images
+\usepackage{svg}                            % ability to use svg 
+\usepackage{wrapfig}                        % package to embedd smaller pictures more appeiling
+\usepackage{layout}                         % for debugging typeset only
+\usepackage{hyperref}                       % allows for links in references and labels
+\usepackage{listings}                       % required to embed code
+
+\lstset{                                    % settings for package "listings"
+    language=C++,
+    numbers=left, 
+    keywordstyle=\color{magenta}\bfseries}
+\hypersetup{                                % settings for package "hyperref"
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,      
+    urlcolor=cyan,
+    pdftitle={Leandro Ebner Task 4},
+    pdfpagemode=FullScreen}
+    
+\ifoot[\includegraphics{graphicx/gplv3-or-later.png}]{}
+\cfoot[Copyright 2023 © Leandro Ebner \\ Licensed under the GNU GPLv3, \\ see \href{https://www.gnu.org/licenses/gpl.html}{https://www.gnu.org/licenses/gpl.html}]{}   
+
+
+% main code:
+
+\begin{document}
+
+\title{Microcontroller Task 4}
+\author{Ebner, Leandro et al.\thanks{Caleb Patrick DSouza, Matr. Nr.: 28840332} \\ Matr. Nr.: 14740284}
+\date{\today}
+\maketitle
+
+\begin{abstract}
+Grundpraktikum 3: \\ Control of an RC servo by an IR remote control and and optical sensor. \\
+Written with the help of KOMA-Script in \LaTeXe{}.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+The aim of the “Task 4: Control of an RC servo by an IR remote control and an optical sensor” is making the participants able to do the following task below:
+\begin{enumerate}
+    \item Create the hardware setup.
+    \item Implement the infrared receiver function.
+    \item Implement the servo motor control function.
+    \item Implement the reflective sensor function.
+\end{enumerate}
+
+
+
+\section{Basic theory}
+\section{Hardware design and development}
+\section{Software design and development}
+\section{Result}
+
+\printbibliography
+
+\end{document}
