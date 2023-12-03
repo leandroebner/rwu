@@ -1,6 +1,6 @@
 % ------------------------------------------------------------------------------------------------
 % TeX template for university, written by Leandro Ebner 2023.
-% v0.1.0-beta, licensed under the GNU GPLv3, see "LICENSE" and <https://www.gnu.org/licenses/>
+% v0.1.2-beta, licensed under the GNU GPLv3, see "LICENSE" and <https://www.gnu.org/licenses/>
 % ------------------------------------------------------------------------------------------------
 
 \documentclass{scrartcl}                    % use KOMA-Script class "article"
@@ -78,8 +78,16 @@ The aim of the “Task 4. Control of an RC servo by an IR remote control and an 
     \end{figure} 
     
     \subsection{Infrared Remote}
-
     
+    The utilized infrared remote is a rudimentary version like any other commonly available remote controls. There are multiple buttons to trigger different actions at the receiving circuit. Each button corresponds to exactly one specific number, generally referred as \emph{command}. This command gets sent according to various protocols, each of them handle the implementation and encoding of the command differently The given remote is operating according to the \emph{NEC protocol} while encoding the different commands in hexadecimal. If a button is pushed down, the corresponding command value is modulated onto an infrared carrier signal. Modulation is the process of varying the intensity of the infrared light at a specific frequency. The remote is battery powered by a single CR2032 coin cell and is equipped with an infrared led on the top of the plastic housing. This allows users to remotely control various electronic devices or projects, such as home automation systems, robotic applications, or multimedia setups. Arduino's versatility and user-friendly programming environment make it accessible for hobbyists and enthusiasts to integrate IR remote functionality into their projects effortlessly.
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\textwidth]{graphicx/remote}
+        \caption{IR remote control which can be used in many different development applications like in combination with the Arduino development plattform. \cite{remote}}
+        \label{remote}
+    \end{figure} 
+
     \subsection{Infrared Receiver Module TSOP1736}
     \subsection{Servo Motor}
     \subsection{Reflective Sensor CNY70}
