@@ -1,6 +1,6 @@
 % ------------------------------------------------------------------------------------------------
 % TeX template for university, written by Leandro Ebner 2023.
-% v0.1-beta, licensed under the GNU GPLv3, see "LICENSE" and <https://www.gnu.org/licenses/>
+% v1.1.1-beta, licensed under the GNU GPLv3, see "LICENSE" and <https://www.gnu.org/licenses/>
 % ------------------------------------------------------------------------------------------------
 
 \documentclass{scrartcl}                    % use KOMA-Script class "article"
@@ -8,9 +8,9 @@
 \usepackage{biblatex}                       % required to use external bibliography file, unfortunately IEEE is only available when comp. in overleaf
 \addbibresource{bibliography.bib}           % main directory for bibliography
 \usepackage[automark]{scrlayer-scrpage}     % use custom header and footer
-\clearpairofpagestyles                      % clear default values
+\clearpairofpagestyles                      % clear default values of header and footer
 \setlength{\headheight}{53pt}               % adjust header to fit in RWU logo
-\setlength{\footheight}{41pt}               % adjusts footer to fit gpl logo
+\setlength{\footheight}{41pt}               % adjusts footer to fit GPL logo
 \ohead[\rwulogo]{\headmark}                 % set custom header
 \ofoot[\pagemark]{\pagemark}                % set custom footer
 \ifoot[]{© Leandro Ebner 2023}              % copyright emblem
@@ -22,16 +22,16 @@
 \usepackage{hyperref}                       % allows for links in references and labels
 \usepackage{listings}                       % required to embed code
 
-\lstset{                                           % settings for package "listings"
+\lstset{                                    % settings for package "listings"
     language=C++,
     numbers=left, 
     keywordstyle=\color{magenta}\bfseries}
-\hypersetup{                                       % settings for package "hyperref"
+\hypersetup{                                % settings for package "hyperref"
     colorlinks=true,
     linkcolor=blue,
     citecolor=blue,      
     urlcolor=cyan,
-    pdftitle={Leandro Ebner Task 1},
+    pdftitle={EDIT},
     pdfpagemode=FullScreen}
     
 \ifoot[\includegraphics{graphicx/gplv3-or-later.png}]{}
